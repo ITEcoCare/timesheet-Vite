@@ -1,7 +1,9 @@
 import React from "react";
 import { useStore } from "../store/zustand";
 import { Form, Formik, useFormik } from "formik";
-import toast, { Toaster } from "react-hot-toast";
+// import toast, { Toaster } from "react-hot-toast";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import { useEffect, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
@@ -30,18 +32,41 @@ const SignIn = () => {
   const loggedIn = useStore((state) => state.loggedIn);
   const clickLogIn = useStore((state) => state.clickLogIn);
   const namaLogin = useStore((state) => state.clickLogIn);
+  const userInfo = useStore((state) => state.userInfo);
+  const flagSignOut = useStore((state) => state.flagSignOut);
+  
   const { berhasilLogin, setBerhasilLogin } = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  useEffect(() => {
+    console.log("flagSignOut >>>", flagSignOut)
+      if (flagSignOut) {
+          toast("👋🏻 Berhasil logout!", {
+              type: "success",
+              theme: localStorage.getItem('theme') == 'light' ? 'light' : 'dark',
+              closeButton: false,
+              position: 'bottom-center',
+              hideProgressBar: false,
+              className: `rounded-xl drop-shadow-2xl bg-opacity-25`,
+              style: {
+                width: "100%",
+                'borderRadius':'15px',
+                'marginBottom': '40px',
+              },
+          })
+      }
+  }, [])
+
   const formik = useFormik({
     initialValues: {
-      username: "eco@ecocare.id",
+      username: "alfian@ecocare.id",
       password: "password",
     },
     onSubmit: (values, actions) => {
       post(values);
     },
+    
   });
 
   if (initialState._isLoggedIn) {
@@ -75,6 +100,9 @@ const SignIn = () => {
   //   }
   // }
 
+
+  
+
   return (
     <>
       <div className="flex flex-col justify-items-center mx-10 mt-20 mb-10 h-[88vh] md:flex-row items-center bg-white dark:bg-stone-700 rounded-3xl overflow-x-auto drop-shadow-2xl bg-[url('https://flowbite.s3.amazonaws.com/docs/jumbotron/hero-pattern.svg')] dark:bg-[url('https://flowbite.s3.amazonaws.com/docs/jumbotron/hero-pattern-dark.svg')]">
@@ -87,7 +115,7 @@ const SignIn = () => {
             alt=""
             className="w-full h-[88vh] object-cover rounded-l-3xl"
           />
-          <div class="bg-gradient-to-t from-green-200 to-transparent dark:from-green-900 w-[50%] h-full absolute top-0 right-0 z-0"></div>
+          <div className="bg-gradient-to-t from-green-200 to-transparent dark:from-green-900 w-[50%] h-full absolute top-0 right-0 z-0"></div>
         </div>
 
         <div className=" text-stone-900 dark:text-stone-300 bg-none md:items-center w-1/2 lg:items-center xl:items-center md:justify-center lg:justify-center xl:justify-center flex items-center justify-center">

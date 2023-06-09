@@ -10,8 +10,9 @@ import {
   FaRegFlag,
   FaSeedling,
   FaCheck,
+  FaCheckCircle,
 } from "react-icons/fa";
-import { useStore } from "../store/zustand";
+import { useStore } from "../../store/zustand";
 import dayjs from "dayjs";
 
 const labelsClasses = ["green", "blue", "red", "yellow", "purple"];
@@ -29,7 +30,7 @@ const CalendarEventModal = () => {
   return (
     <>
       <div className="h-screen w-full z-10 bg-stone-800 bg-opacity-90 fixed left-0 top-0 flex justify-center items-center">
-        <form className="bg-white rounded-xl shadow-2xl w-1/4 ">
+        <form className="bg-white rounded-xl shadow-2xl w-2/4 ">
           <header className="bg-gray-200 rounded-t-xl px-4 py-2 flex justify-between items-center">
             <span className="cursor-pointer text-gray-400">
               <FaGripHorizontal />

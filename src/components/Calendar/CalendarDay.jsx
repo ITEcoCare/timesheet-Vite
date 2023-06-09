@@ -2,7 +2,7 @@ import dayjs from "dayjs";
 import React, { useContext, useState, useEffect } from "react";
 
 // zustand
-import { useStore } from "../store/zustand";
+import { useStore } from "../../store/zustand";
 
 const CalendarDay = ({ day, rowIdx }) => {
 
@@ -71,10 +71,10 @@ const CalendarDay = ({ day, rowIdx }) => {
             {/* {evt.title} */}
           </div>
             
-          {/* <div className={`bg-purple-300 mx-1 p-1 text-black text-xs font-bold rounded-lg mb-1 truncate`}>{"idx"}</div>
+          <div className={`bg-purple-300 mx-1 p-1 text-black text-xs font-bold rounded-lg mb-1 truncate`}>{"idx"}</div>
           <div className={`bg-red-300 mx-1 p-1 text-black text-xs font-bold rounded-lg mb-1 truncate`}>{"idx"}</div>
           <div className={`bg-green-300 mx-1 p-1 text-black text-xs font-bold rounded-lg mb-1 truncate`}>{"idx"}</div>
-          <div className={`bg-green-300 mx-1 p-1 text-black text-xs font-bold rounded-lg mb-1 truncate`}>{"idx"}</div> */}
+          <div className={`bg-gray-300 mx-1 p-1 text-black text-xs font-bold rounded-lg mb-1 truncate`}>{"idx"}</div>
         {/*  ))} */}
       </div>
       </div>

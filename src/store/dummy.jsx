@@ -50,9 +50,9 @@ export const getData = () => [
       "https://images.unsplash.com/photo-1520813792240-56fc4a3765a7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=256&h=256&q=60",
   },
   {
-    name: "Jenny Wilson",
+    name: "Ridwan Wilson",
     age: 20,
-    email: "jenny.wilson@ecocare.co.id",
+    email: "ridwan.wilson@ecocare.co.id",
     title: "Central Security Manager",
     department: "Program",
     status: tempStatus("Active"),

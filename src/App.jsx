@@ -11,11 +11,14 @@ import {
 import Home from "./components/Home";
 import Intro from "./components/Intro";
 import Profile from "./components/Profile";
-import Timesheet from "./components/Timesheet";
-import Calendar from "./components/Calendar";
+import Project from "./components/Project&Tag/Project";
+import Timesheet from "./components/Timesheet/Timesheet";
+import Calendar from "./components/Calendar/Calendar";
 import Navbar from "./components/Navbar";
 import Joget from "./components/Joget";
 import Footer from "./components/Footer";
+import Employee from "./components/Employee/Employee";
+import Tempo from "./components/Tempo";
 import ProtectedRoutes from "./routes/ProtectedRoutes";
 import toast, { Toaster } from "react-hot-toast";
 
@@ -34,39 +37,24 @@ function App() {
   const countReset = useStore((state) => state.countReset);
   const initialState = useStore((state) => state.initialState);
 
-  // if (!initialState._isLoggedIn) {
-  //   <Navigate to="/signin" />;
-  // }
 
   const RequiredAuth = ({
     isLoggedIn,
     children,
   }) => {
     const accessToken = localStorage.getItem("accessToken");
-    // console.log("isLoggedIn ==>", isLoggedIn);
     
-    if (!isLoggedIn) {
+    if (!isLoggedIn ) {
       // isLoggedIn = true;
       <Navigate to="/signin" />;
-    }
+    // } else if (window.location.pathname == '/') {
+    } 
 
     // if (accessToken == null || accessToken == undefined) {
     //   window.location.reload("/signin");
     // }
 
-    return children ? children : <Outlet />;
-
-    // const access_token = localStorage.getItem("access_token");
-
-    // if (!isLoggedIn) {
-    //   return <Navigate to={redirectPath} replace={true} />;
-    // }
-
-    // if (access_token == null) {
-    //   window.location.reload("/auth/login");
-    // }
-
-    // return children ? children : <Outlet />;
+    return children  
   };
 
   const routes = useRoutes([
@@ -88,12 +76,29 @@ function App() {
           element: <SignIn />,
         },
         {
+          path: "/project",
+          element: (
+            <RequiredAuth isLoggedIn={false}>
+              <Project />
+            </RequiredAuth>
+          ),
+        },
+        {
           path: "/timesheet",
           element: (
             <RequiredAuth isLoggedIn={false}>
               <Timesheet />
             </RequiredAuth>
           ),
+        },
+        {
+          path: "/employee",
+          element: (
+            <RequiredAuth isLoggedIn={false}>
+              <Employee />
+            </RequiredAuth>
+          ),
+          component: <Employee />
         },
         {
           path: "/calendar",
@@ -110,6 +115,15 @@ function App() {
               <Joget />
             </RequiredAuth>
           ),
+        },
+        {
+          path: "/tempo",
+          element: (
+            <RequiredAuth isLoggedIn={false}>
+              <Tempo />
+            </RequiredAuth>
+          ),
+          component: <Tempo />
         },
       ],
     },

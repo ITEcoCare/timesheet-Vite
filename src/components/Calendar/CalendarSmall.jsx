@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import dayjs from "dayjs";
-import { getMonth } from "../utils/util";
+import { getMonth } from "../../utils/util";
 import { FaAngleRight, FaAngleLeft } from "react-icons/fa";
 // zustand
-import { useStore } from "../store/zustand";
+import { useStore } from "../../store/zustand";
 
 const CalendarSmall = () => {
 

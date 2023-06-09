@@ -1,12 +1,12 @@
 import React from "react";
 import dayjs from "dayjs";
-import logo from "../assets/calendarlogo.png";
-import arrowRight from "../assets/arrow-right.png";
+import logo from "../../assets/calendarlogo.png"
+import arrowRight from "../../assets/arrow-right.png";
 import { FaAngleRight, FaAngleLeft } from "react-icons/fa";
 import { GrFormNext } from "react-icons/gr";
 
 // zustand
-import { useStore } from "../store/zustand";
+import { useStore } from "../../store/zustand";
 
 const CalendarHeader = () => {
 
@@ -30,6 +30,13 @@ const CalendarHeader = () => {
         ? monthIndex + Math.random()
         : dayjs().month()
     );
+  }
+
+  const handlePrevWeek =()=> {
+    setMonthIndex(monthIndex - 1);
+  }
+  const handleNextWeek =()=> {
+    setMonthIndex(monthIndex + 1);
   }
 
   return (
@@ -56,6 +63,23 @@ const CalendarHeader = () => {
       </button>
       <h2 className="ml-4 text-3xl font-bold text-stone-500 dark:text-stone-300">
         {dayjs(new Date(dayjs().year(), monthIndex)).format("MMMM YYYY")}
+      </h2>
+
+
+      <button
+        // onClick={handlePrevWeek}
+        className="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded-l-xl hover:shadow-inner "
+      >
+        <FaAngleLeft className="w-6 h-6" color="white" />
+      </button>
+      <button
+        // onClick={handleNextWeek}
+        className="fill-white text-white bg-blue-500 hover:bg-blue-400 font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded-r-xl hover:shadow-inner "
+      >
+        <FaAngleRight className="w-6 h-6" color="white" />
+      </button>
+      <h2 className="ml-4 text-3xl font-bold text-stone-500 dark:text-stone-300">
+        {dayjs(new Date(dayjs().year(), monthIndex)).format("MM MMMM")}
       </h2>
     </header>
   );

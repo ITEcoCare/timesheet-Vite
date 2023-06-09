@@ -203,51 +203,32 @@ export const useStore = create((set) => ({
     setTema: (val) => { set((state) => ({ theme: val})) },
 
     currTimesheet: [],
-    getTimesheet: async (token, inputs) => {
+    getTimesheet: async (token) => {
         try {
-            const result = await axios.post(`${url2}timesheet/my-timesheet`, 
-            {
-                date: inputs 
-            },
-            {
+            const result = await axios.get(`${url2}timesheet/my-timesheet`, {
                 headers: {Authorization: `bearer ${token}`},
-            }
-            );
+            });
             return Promise.resolve(result.data);
         } catch (error) {
             console.log(error);
         }
     },
-    createTimesheet: async (token, val) => {
+    createTimesheet: async (token, project_id) => {
         let ambilAcc = JSON.parse(localStorage.getItem("account"))   
-        console.log("masuk cr ts >> val", val)
+        console.log("masuk cr ts project_id", project_id)
         try {
             const rc = await axios.post(`${url2}timesheet/create`,
                 {
-                    project_id: val.project_id,
-                    tag_id: Number(val.tag_id),
-                    duration: Number(val.duration),
-                    work_date: val.work_date,
-                    description: val.description
+                    company_id: ambilAcc.employee_company_id,
+                    project_id: project_id,
+                    department_id: ambilAcc.employee_department_id, 
+                    employee_id: ambilAcc.employee_id,
                 }, 
                 {
                     headers: { Authorization: `bearer ${token}`},
                 }
             )
             console.log("hasil cr ts", rc)
-            toast(`Sukses membuat timesheet! 👍`, {
-                type: "success",
-                theme: localStorage.getItem('theme') == 'light' ? 'light' : 'dark',
-                closeButton: false,
-                position: 'bottom-center',
-                hideProgressBar: false,
-                className: `rounded-xl drop-shadow-2xl bg-opacity-25`,
-                style: {
-                  width: "100%",
-                  'borderRadius':'15px',
-                  'marginBottom': '40px',
-                },
-            })
             return rc
 
         } catch (error) {
@@ -255,207 +236,41 @@ export const useStore = create((set) => ({
         }
     },
     submitTimesheet: async(token, record) => {
-        try {
-            const rc = await axios.post(`${url2}timesheet/submit`,
-                { }, 
-                {
-                    headers: { Authorization: `bearer ${token}`},
-                }
-            )
-            console.log("hasil sub ts", rc)
-            toast(`Timesheet submitted! 👍`, {
-                type: "warning",
-                theme: localStorage.getItem('theme') == 'light' ? 'light' : 'dark',
-                closeButton: false,
-                position: 'bottom-center',
-                hideProgressBar: false,
-                className: `rounded-xl drop-shadow-2xl bg-opacity-25`,
-                style: {
-                  width: "100%",
-                  'borderRadius':'15px',
-                  'marginBottom': '40px',
-                },
-            })
-            return rc
+        console.log("masuk sub ztd", token, record)
+        // try {
+        //     const rc = await axios.post(`${url2}timesheet/create`,
+        //         {
+        //             action: "submit",
+        //             employee_approvel_id: 2,
+        //             timesheets: [
+        //                 {
+        //                     timesheet_id: record.timesheet_id,
+        //                     employee_id: record.employee_id,
+        //                     activity_id : 1,
+        //                     activity_name : 1,
+        //                     activities: [
+        //                         {
+        //                             "work_date": "2023-04-14",
+        //                             "duration": 5,
+        //                             "notes": "Lima Jam diskusi Invoice"
+        //                         }
+        //                     ]
+        //                 }
+        //             ]
+        //         }, 
+        //         {
+        //             headers: { Authorization: `bearer ${token}`},
+        //         }
+        //     )
+        //     console.log("hasil cr ts", rc)
+        //     return rc
 
-        } catch (error) {
-            console.log(error)
-        }
+        // } catch (error) {
+        //     console.log(error)
+        // }
     }, 
     createAWeek: (values) => {
         console.log("masuk create a week");
-    },
-    approveTimesheet: async (token, val) => {
-        console.log("masuk approved", val.employee_id, val.timesheet_work_date)
-        try {
-            const rc = await axios.post(`${url2}timesheet/approve`,
-                {
-                    employee_id: val.employee_id,
-                    work_date: val.timesheet_work_date
-                }, 
-                {
-                    headers: { Authorization: `bearer ${token}`},
-                }
-            )
-            console.log("hasil apv ts", rc)
-            toast(`${rc.data.message} 👍`, {
-                type: "success",
-                theme: localStorage.getItem('theme') == 'light' ? 'light' : 'dark',
-                closeButton: false,
-                position: 'bottom-center',
-                hideProgressBar: false,
-                className: `rounded-xl drop-shadow-2xl bg-opacity-25`,
-                style: {
-                  width: "100%",
-                  'borderRadius':'15px',
-                  'marginBottom': '40px',
-                },
-            })
-            return rc
-
-        } catch (error) {
-            if (val.timesheet_status == 1) {
-                toast(`Anda tidak memiliki wewenang terhadap timesheet ini!`, {
-                    type: "error",
-                    theme: localStorage.getItem('theme') == 'light' ? 'light' : 'dark',
-                    closeButton: false,
-                    position: 'bottom-center',
-                    hideProgressBar: false,
-                    className: `rounded-xl drop-shadow-2xl bg-opacity-25`,
-                    style: {
-                      width: "100%",
-                      'borderRadius':'15px',
-                      'marginBottom': '40px',
-                    },
-                })
-                console.log(error)
-            } else if (val.timesheet_status == 0){
-                toast(`timesheet ini belum dapat di approve...`, {
-                    type: "info",
-                    theme: localStorage.getItem('theme') == 'light' ? 'light' : 'dark',
-                    closeButton: false,
-                    position: 'bottom-center',
-                    hideProgressBar: false,
-                    className: `rounded-xl drop-shadow-2xl bg-opacity-25`,
-                    style: {
-                      width: "100%",
-                      'borderRadius':'15px',
-                      'marginBottom': '40px',
-                    },
-                })
-                console.log(error)
-
-            } else {
-                toast(`timesheet ini sudah pernah di approve.`, {
-                    type: "warning",
-                    theme: localStorage.getItem('theme') == 'light' ? 'light' : 'dark',
-                    closeButton: false,
-                    position: 'bottom-center',
-                    hideProgressBar: false,
-                    className: `rounded-xl drop-shadow-2xl bg-opacity-25`,
-                    style: {
-                      width: "100%",
-                      'borderRadius':'15px',
-                      'marginBottom': '40px',
-                    },
-                })
-                console.log(error)
-
-            }
-        }
-    },
-    rejectTimesheet: async (token, val) => {
-        console.log("masuk rejected", val.employee_id, val.timesheet_work_date)
-        try {
-            const rc = await axios.post(`${url2}timesheet/reject`,
-                {
-                    employee_id: val.employee_id,
-                    work_date: val.timesheet_work_date
-                }, 
-                {
-                    headers: { Authorization: `bearer ${token}`},
-                }
-            )
-            console.log("hasil apv ts", rc)
-            toast(`${rc.data.message}... 👍`, {
-                type: "warning",
-                theme: localStorage.getItem('theme') == 'light' ? 'light' : 'dark',
-                closeButton: false,
-                position: 'bottom-center',
-                hideProgressBar: false,
-                className: `rounded-xl drop-shadow-2xl bg-opacity-25`,
-                style: {
-                  width: "100%",
-                  'borderRadius':'15px',
-                  'marginBottom': '40px',
-                },
-            })
-            return rc
-
-        } catch (error) {
-            if (val.timesheet_status == 1) {
-                toast(`Anda tidak memiliki wewenang terhadap timesheet ini!`, {
-                    type: "error",
-                    theme: localStorage.getItem('theme') == 'light' ? 'light' : 'dark',
-                    closeButton: false,
-                    position: 'bottom-center',
-                    hideProgressBar: false,
-                    className: `rounded-xl drop-shadow-2xl bg-opacity-25`,
-                    style: {
-                      width: "100%",
-                      'borderRadius':'15px',
-                      'marginBottom': '40px',
-                    },
-                })
-                console.log(error)
-            } else if (val.timesheet_status == 0){
-                toast(`timesheet ini belum dapat di reject...`, {
-                    type: "info",
-                    theme: localStorage.getItem('theme') == 'light' ? 'light' : 'dark',
-                    closeButton: false,
-                    position: 'bottom-center',
-                    hideProgressBar: false,
-                    className: `rounded-xl drop-shadow-2xl bg-opacity-25`,
-                    style: {
-                      width: "100%",
-                      'borderRadius':'15px',
-                      'marginBottom': '40px',
-                    },
-                })
-                console.log(error)
-
-            } else if (val.timesheet_status == 3){
-                toast(`timesheet ini sudah pernah di reject.`, {
-                    type: "warning",
-                    theme: localStorage.getItem('theme') == 'light' ? 'light' : 'dark',
-                    closeButton: false,
-                    position: 'bottom-center',
-                    hideProgressBar: false,
-                    className: `rounded-xl drop-shadow-2xl bg-opacity-25`,
-                    style: {
-                      width: "100%",
-                      'borderRadius':'15px',
-                      'marginBottom': '40px',
-                    },
-                })
-                console.log(error)
-            } else {
-                toast(`timesheet ini sudah di approve.`, {
-                    type: "warning",
-                    theme: localStorage.getItem('theme') == 'light' ? 'light' : 'dark',
-                    closeButton: false,
-                    position: 'bottom-center',
-                    hideProgressBar: false,
-                    className: `rounded-xl drop-shadow-2xl bg-opacity-25`,
-                    style: {
-                      width: "100%",
-                      'borderRadius':'15px',
-                      'marginBottom': '40px',
-                    },
-                })
-                console.log(error)
-            }
-        }
     },
     
     
@@ -465,12 +280,12 @@ export const useStore = create((set) => ({
                 // const resPro = await axios.get(`${url2}project/read`, { 
                 headers: { Authorization: `bearer ${token}`},
             })
-            // console.log("isi get project", resPro)
             return Promise.resolve(resPro)
         } catch (error) {
             console.log(error);
         }
     },
+    
     getProjectByUser: async (token)=> {
         try {
             const res = await axios.get(`${url2}project/assign/read`, { 
@@ -488,7 +303,7 @@ export const useStore = create((set) => ({
         try {
             const rc = await axios.post(`${url2}project/assign/create`,
                 {
-                    project_id: val.result.project_id,
+                    project_id: val.project_id,
                     department_id: [
                         ambilAcc.employee_department_id
                     ]
@@ -510,10 +325,10 @@ export const useStore = create((set) => ({
             const rc = await axios.post(`${url2}project/create`,
                 {
                     company_id: 2, //hardcode
-                    title: val.title,
+                    title: val.project_name,
                     description: val.description,
-                    start_date: val.start_date,
-                    end_date: val.end_date
+                    start_date: nowDate,
+                    end_date: endDate
                 }, 
                 {
                     headers: { Authorization: `bearer ${token}`},
@@ -538,6 +353,7 @@ export const useStore = create((set) => ({
             console.log(error);
         }
     },
+    
     delProject: async (token, val) => {
         set({ flagDelete: false })
         try {
@@ -556,18 +372,6 @@ export const useStore = create((set) => ({
             
         } catch (error) {
             console.log(error)
-        }
-    },
-
-    getTags: async (token)=> {
-        try {
-            const res = await axios.get(`${url2}project/tag/read`, { 
-                headers: { Authorization: `bearer ${token}`},
-            })
-            // console.log("isi get tags", res)
-            return Promise.resolve(res)
-        } catch (error) {
-            console.log(error);
         }
     },
    

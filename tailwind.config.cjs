@@ -3,7 +3,11 @@
 const labelsClasses = ["indigo", "gray", "green", "blue", "red", "purple"];
 
 module.exports = {
-  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
+  content: [
+    "./index.html", 
+    "./src/**/*.{js,ts,jsx,tsx}", 
+    "node_modules/flowbite-react/**/*.{js,jsx,ts,tsx}",
+  ],
   safelist: [
     ...labelsClasses.map((lbl) => `bg-${lbl}-500`),
     ...labelsClasses.map((lbl) => `bg-${lbl}-200`),
@@ -53,5 +57,8 @@ module.exports = {
   variants: {
     extend: {},
   },
-  plugins: [require("@tailwindcss/forms")],
+  plugins: [
+    require("@tailwindcss/forms"), 
+    require('flowbite/plugin')
+  ],
 };

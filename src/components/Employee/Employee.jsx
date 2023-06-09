@@ -1,10 +1,21 @@
 import React from "react";
-import { ordersData, contextMenuItems, ordersGrid } from "../data/dummy";
-import Table, { SelectColumnFilter, AvatarCell } from "./Table";
-import { getData } from "../store/dummy";
+import EmployeeTable, { SelectColumnFilter, AvatarCell } from "./EmployeeTable";
+import EmployeeEventModal from "../Employee/EmployeeEventModal";
+import Header from "../Header";
+
+// import { getData } from "../../../store/dummy";
+import { getData } from "../../store/dummy";
+// import { useStore } from "../../store/zustand";
+import { useStore } from "../../store/zustand";
+import { ordersData, contextMenuItems, ordersGrid } from "../../data/dummy";
 // import { scheduleData } from "../data/dummy"
 
-const Timesheet = () => {
+const Employee = () => {
+
+  //zustand
+  const showEventModal = useStore((state) => state.showEventModal);
+  const setShowEventModal = useStore((state) => state.setShowEventModal);
+
   const editing = { allowDeleting: true, allowEditing: true };
   const isStaff = true;
   const columns = React.useMemo(
@@ -46,8 +57,11 @@ const Timesheet = () => {
 
   return (
     <div className="flex flex-col p-10 mx-10 mt-20 mb-10 h-[88vh] justify-items-center bg-white dark:bg-stone-700 rounded-3xl overflow-x-auto drop-shadow-2xl">
-      <Table columns={columns} data={data} />
+      {/* <Header /> */}
+      <span className="font-bold text-3xl flex mb-4 text-green-500">Employee!</span>
+      <EmployeeTable columns={columns} data={data} />
+      {showEventModal && <EmployeeEventModal />}
     </div>
   );
 };
-export default Timesheet;
+export default Employee;

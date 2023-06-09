@@ -1,11 +1,11 @@
 import React from "react";
-import { useStore } from "../store/zustand";
+import { useStore } from "../../store/zustand";
 
 import axios from "axios";
 // const baseURL = "https://jsonplaceholder.typicode.com/posts/1";
 const baseURL = import.meta.env.VITE_API_URL
 
-const CreateEventButton = () => {
+const CreateEmployeeButton = () => {
   const url1 = `${baseURL}/v1/login`
   const url2 = 'http://mstation.tukangbersih.com/index.php/api/auth/login'
 
@@ -35,4 +35,4 @@ const CreateEventButton = () => {
   );
 };
 
-export default CreateEventButton;
+export default CreateEmployeeButton;
